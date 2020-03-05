@@ -3,7 +3,7 @@
 #include <cmath>
 using namespace std;
 
-#define ARRSIZE 0xfffff
+#define ARRSIZE 0xffff
 #define ROUNDS 10
 
 unsigned long long  arrayOfPrimes[ARRSIZE];
@@ -11,10 +11,18 @@ unsigned long long  checkingNumber = 1;
 unsigned long long  countOfPrimes = 1;
 unsigned long       sq;
 unsigned long       localCounter;
-bool flagPrime = true;
+//bool flagPrime = true;
 
 int timeArr[ROUNDS];
 clock_t start, stop, deltaTime;
+
+void clc() {
+    for (int i = 1; i <= localCounter; i++)
+        if (checkingNumber % arrayOfPrimes[i] == 0)
+            return;
+    arrayOfPrimes[countOfPrimes] = checkingNumber;
+    countOfPrimes++;
+}
 
 int main() {
     arrayOfPrimes[0] = 2;
@@ -30,23 +38,30 @@ int main() {
             while (arrayOfPrimes[localCounter] < sq)
                 localCounter++;
 
-            for (int i = 1; i <= localCounter; i++) {
-                if (checkingNumber % arrayOfPrimes[i] == 0) {
-                    flagPrime = false;
-                    break;
-                }
-            }
-            if (flagPrime) {
-                arrayOfPrimes[countOfPrimes] = checkingNumber;
-                countOfPrimes++;
-            }
-            flagPrime = true;
+            clc();
+//            for (int i = 1; i <= localCounter; i++) {
+//                if (checkingNumber % arrayOfPrimes[i] == 0) {
+//                    flagPrime = false;
+//                    break;
+//                }
+//            }
+//            if (flagPrime) {
+//                arrayOfPrimes[countOfPrimes] = checkingNumber;
+//                countOfPrimes++;
+//            }
+//            flagPrime = true;
         }
 
+///     linux
         stop = clock();
-        deltaTime = (stop - start);
+        deltaTime = (stop - start)/1000;
         timeArr[round] = deltaTime;
-        cout << round << ":\t" << deltaTime << " ms\n";//<< countOfPrimes << endl << checkingNumber << "\n\n";
+        cout << round << ":\t\t" << deltaTime << " ms\n";
+
+////       windows
+//        deltaTime = stop - start;
+//        timeArr[round] = deltaTime;
+//        cout << round << ":\t" << deltaTime << " ms\n";
 
         checkingNumber = 1; countOfPrimes = 1;
         for (int i = 1; i < ARRSIZE; i++) {
@@ -55,8 +70,8 @@ int main() {
     }
 
     deltaTime = 0;
-    for (int i = 0; i < ROUNDS; i++) {
-        deltaTime += timeArr[i];
+    for (int round : timeArr) {
+        deltaTime += round;
     }
     cout << "==============\n" << "avg:\t" << deltaTime / ROUNDS << " ms\n";
 
