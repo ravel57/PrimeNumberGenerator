@@ -1,0 +1,141 @@
+#include <iostream>
+#include <cmath>
+#include <ctime>
+#include <thread>
+using namespace std;
+
+#define ARRSIZE 0xfffffff
+//#define ROUNDS 10
+thread *threadArr = new thread[3];
+
+unsigned int arrayOfPrimes[ARRSIZE];
+unsigned int numberOfPrimes = 0;
+unsigned long long currentCheckNumber = 1;
+clock_t start, stop;
+
+
+
+//class Bigint {
+//private:
+//	unsigned __int64 *blocks;
+//	long blocksCount = 1;
+//
+//public:
+//	Bigint() {
+//		blocks = new unsigned __int64[blocksCount];
+//	}
+//
+//	~Bigint() {
+//		delete blocks;
+//	}
+//
+//	void operator = (Bigint num) {
+//		this->blocks = num.blocks;
+//		this->blocksCount = num.blocksCount;
+//	}
+//
+//	Bigint operator + (Bigint num) {
+//
+//	}
+//
+//	void  operator += (Bigint num) {
+//		if(blocks[blocksCount] == 0x3fffffff) {
+//			blocks = new unsigned __int64[++blocksCount];
+//		}
+//
+//	}
+//
+//	Bigint operator % (Bigint num) {
+//		while (blocksCount) {
+//
+//		}
+//	}
+//
+//	friend unsigned __int64 sqrt(unsigned __int64 num) {
+//		unsigned __int64 temp, div;
+//		unsigned __int64 rslt;// = (unsigned __int64)num;
+//		if (num <= 0) return 0;
+//		else if (num & 0xFFFF0000L)
+//			if (num & 0xFF000000L) div = 0x3FFF;
+//			else div = 0x3FF;
+//		else
+//			if (num & 0x0FF00L) div = 0x3F;
+//			else div = (num > 4) ? 0x7 : num;
+//
+//		while (num) {
+//			temp = num / div + div;
+//			div = temp >> 1;
+//			div += temp & 1;
+//			if (rslt > div) rslt = (unsigned __int64)div;
+//			else return rslt;
+//		}
+//	}
+//
+//};
+
+//bool checkNum(int &currentCheckNumber) {
+//	unsigned int counter = 0;
+//	int sqtrOfCurrentNumber = sqrt(currentCheckNumber);
+//	while ((sqtrOfCurrentNumber >= arrayOfPrimes[counter]) && arrayOfPrimes[counter]) {
+//		if (!(currentCheckNumber % arrayOfPrimes[counter++]))
+//			return 0;
+//	}
+//	return 1;
+//}
+
+unsigned __int64 Sqrt(unsigned __int64 num) {
+	unsigned __int64 div, temp;
+	unsigned __int64 rslt = (unsigned __int64)num;
+	if (num <= 0) return 0;
+	else if (num & 0xFFFF0000L)
+		if (num & 0xFF000000L) div = 0x3FFF;
+		else div = 0x3FF;
+	else
+		if (num & 0x0FF00L) div = 0x3F;
+		else div = (num > 4) ? 0x7 : num;
+
+	while (num) {
+		//temp = num / div + div;
+		//div = temp >> 1;
+		//div += temp & 1;
+		//if (rslt > div) rslt = (unsigned)div;
+		//else {
+		//	if (num / rslt == rslt - 1 && num%rslt == 0) rslt--;
+		//	return ++rslt;
+		//}
+		return (num / div + div + 2) / 2;
+	}
+}
+
+
+int main() {
+
+	for (int i = 100; i--;) {
+		cout << i << " : " << Sqrt(i) << "\t|\t";
+		cout << i << " : " << sqrt((float)i) << endl;
+	}
+
+	////for (int round = 0; round < ROUNDS; round++) {
+	//start = clock();
+	//while (numberOfPrimes < ARRSIZE) {
+	//	currentCheckNumber += 2;
+	//	//thread t;
+	//}
+	//stop = clock();
+	//printf("time: %u ms \ncount: %u \nlast: %u", stop - start, ARRSIZE, currentCheckNumber);
+
+	//getchar();
+	getchar();
+	return 0;
+}
+
+
+//	printf("%3i %u ms \n", round, stop - start);			//	номер числа, число, разница времени, общее время
+
+//	numberOfPrimes = 0;
+//	currentCheckNumber = 1;
+//	flagPrime = 1;
+
+//	for (int i = 0; i < ARRSIZE; i++)
+//		arrayOfPrimes[i] = 0;
+//}
