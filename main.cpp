@@ -3,8 +3,8 @@
 #include <cmath>
 using namespace std;
 
-#define ARRSIZE 0xffffff
-#define ROUNDS 3
+#define ARRSIZE 0xfffff
+#define ROUNDS 10
 
 unsigned long long  arrayOfPrimes[ARRSIZE];
 unsigned long long  checkingNumber = 1;
@@ -26,7 +26,7 @@ int main() {
         while (countOfPrimes < ARRSIZE) {
             checkingNumber += 2;
 
-            sq = sqrt(checkingNumber), localCounter=0;
+            sq = sqrt(checkingNumber), localCounter = 0;
             while (arrayOfPrimes[localCounter] < sq)
                 localCounter++;
 
@@ -44,9 +44,9 @@ int main() {
         }
 
         stop = clock();
-        deltaTime = (stop - start) / 1000;
+        deltaTime = (stop - start);
         timeArr[round] = deltaTime;
-        cout << round << ":\t\t" << deltaTime << " ms\n" ;//<< countOfPrimes << endl << checkingNumber << "\n\n";
+        cout << round << ":\t" << deltaTime << " ms\n";//<< countOfPrimes << endl << checkingNumber << "\n\n";
 
         checkingNumber = 1; countOfPrimes = 1;
         for (int i = 1; i < ARRSIZE; i++) {
@@ -60,7 +60,7 @@ int main() {
     }
     cout << "==============\n" << "avg:\t" << deltaTime / ROUNDS << " ms\n";
 
-//    cin.get();
+    cin.get();
     return 0;
 }
 
