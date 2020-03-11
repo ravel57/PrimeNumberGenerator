@@ -1,55 +1,60 @@
 #include <iostream>
 #include <ctime>
 #include <cmath>
+#include <fstream>
 using namespace std;
 
-#define ARRSIZE 0xffff
-#define ROUNDS 10
+#define ARRSIZE 0x3ffffff
+#define ROUNDS 1
 
 unsigned long long  arrayOfPrimes[ARRSIZE];
-unsigned long long  checkingNumber = 1;
-unsigned long long  countOfPrimes = 1;
-unsigned long       sq;
+unsigned long long  checkingNumber;
+unsigned long long  countOfPrimes;
 unsigned long       localCounter;
+double              sq;
 //bool flagPrime = true;
 
 int timeArr[ROUNDS];
 clock_t start, stop, deltaTime;
 
-void clc() {
-    for (int i = 1; i <= localCounter; i++)
+ofstream file("pn.txt", ios::trunc);
+
+
+inline void clc() {
+    for (int i = 0; i < localCounter; i++)
         if (checkingNumber % arrayOfPrimes[i] == 0)
             return;
-    arrayOfPrimes[countOfPrimes] = checkingNumber;
-    countOfPrimes++;
+    arrayOfPrimes[countOfPrimes++] = checkingNumber;
+//    countOfPrimes++;
+    if (countOfPrimes % 100 == 0) {
+        file << checkingNumber << "\t:\t" << clock() - start << "\tmks\n";
+    }
 }
 
 int main() {
-    arrayOfPrimes[0] = 2;
+    arrayOfPrimes[0] = 3;
     cout << "start\n" << "count:\t" << ARRSIZE << "\n--------------\n";
 
     for (int round = 0; round < ROUNDS; round++) {
         start = clock();
 
-        while (countOfPrimes < ARRSIZE) {
-            checkingNumber += 2;
-
+        for (checkingNumber = 5, countOfPrimes = 1; countOfPrimes < ARRSIZE; checkingNumber += 2) {
             sq = sqrt(checkingNumber), localCounter = 0;
-            while (arrayOfPrimes[localCounter] < sq)
+            while (arrayOfPrimes[localCounter] <= sq)
                 localCounter++;
 
             clc();
-//            for (int i = 1; i <= localCounter; i++) {
-//                if (checkingNumber % arrayOfPrimes[i] == 0) {
-//                    flagPrime = false;
-//                    break;
-//                }
-//            }
-//            if (flagPrime) {
-//                arrayOfPrimes[countOfPrimes] = checkingNumber;
-//                countOfPrimes++;
-//            }
-//            flagPrime = true;
+            /*for (int i = 1; i <= localCounter; i++) {
+                if (checkingNumber % arrayOfPrimes[i] == 0) {
+                    flagPrime = false;
+                    break;
+                }
+            }
+            if (flagPrime) {
+                arrayOfPrimes[countOfPrimes] = checkingNumber;
+                countOfPrimes++;
+            }
+            flagPrime = true;*/
         }
 
 ///     linux
@@ -63,10 +68,11 @@ int main() {
 //        timeArr[round] = deltaTime;
 //        cout << round << ":\t" << deltaTime << " ms\n";
 
-        checkingNumber = 1; countOfPrimes = 1;
         for (int i = 1; i < ARRSIZE; i++) {
             arrayOfPrimes[i] = 0;
         }
+        file << "\n";
+        file.close();
     }
 
     deltaTime = 0;
